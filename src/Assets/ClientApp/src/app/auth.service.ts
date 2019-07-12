@@ -15,7 +15,7 @@ export class AuthService {
   // Auth0 application configuration
   config = {
     domain: 'assettracking.eu.auth0.com',
-    client_id: '<!-- SECRET -->',
+    client_id: 'GC0hq20C5YOxsN1SZLS7K7e419eTZOLI',
     redirect_uri: `${window.location.origin}/callback`
   };
 
