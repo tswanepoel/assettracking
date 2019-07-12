@@ -1,0 +1,8 @@
+<header>
+  <button (click)="login()" *ngIf="!isAuthenticated">Log in</button>
+  <button (click)="logout()" *ngIf="isAuthenticated">Log out</button>
+
+  <!-- NEW - add a couple of router links to the home page, and to profile -->
+  <a [routerLink]="['']">Home</a>&nbsp;
+  <a [routerLink]="['profile']" *ngIf="isAuthenticated">Profile</a>
+</header>
