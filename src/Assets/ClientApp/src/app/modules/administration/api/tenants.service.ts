@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../../../shared/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class TenantsService {
     private httpClient: HttpClient
   ) { }
 
-  async getTenantsMy(): Promise<any> {
+  async getMyTenants(): Promise<any> {
     const client = await this.authService.getAuth0Client();
     const token = await client.getTokenSilently();
 
