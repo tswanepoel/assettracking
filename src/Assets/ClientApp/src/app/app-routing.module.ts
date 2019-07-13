@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CallbackComponent } from './callback/callback.component';
-import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from './auth.guard';
+import { HomeComponent } from './pages/home/home.component';
+import { CallbackComponent } from './pages/callback/callback.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent
+  },
   {
     path: 'callback',
     component: CallbackComponent
   },
   {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [ AuthGuard ]
+    path: 'admin',
+    loadChildren: () => import('./modules/administration/administration.module').then(m => m.AdministrationModule)
+  },
+  {
+    path: ':tenant',
+    loadChildren: () => import('./modules/asset-tracking/asset-tracking.module').then(m => m.AssetTrackingModule)
   }
 ];
 

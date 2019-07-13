@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
-import { faGlobe, faBars, faHome, faUserFriends, faSignOutAlt, faCog } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from 'src/app/auth.service';
+import { faGlobe, faBars, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +13,6 @@ export class NavbarComponent implements OnInit {
   title = 'Asset Tracking';
   appIcon = faGlobe;
   menuIcon = faBars;
-  dashboardIcon = faHome;
-  contactsIcon = faUserFriends;
   settingsIcon = faCog;
   signOutIcon = faSignOutAlt;
   isCollapsed = true;

@@ -21,27 +21,15 @@
             <input class="form-control my-1" type="search" placeholder="Search" aria-label="Search">
           </li>
             
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="[ '' ]" (click)="isCollapsed = true"><fa-icon class="d-sm-none" [icon]="dashboardIcon" size="lg" [fixedWidth]="true"></fa-icon> Dashboard</a>
-          </li>
-  
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="[ 'contacts' ]" (click)="isCollapsed = true"><fa-icon class="d-sm-none" [icon]="contactsIcon" size="lg" [fixedWidth]="true"></fa-icon> Contacts</a>
-          </li>
-
-          <li class="nav-item" class="nav-item d-sm-none">
-            <a class="nav-link" [routerLink]="[ 'settings' ]" (click)="isCollapsed = true"><fa-icon [icon]="settingsIcon" size="lg" [fixedWidth]="true"></fa-icon> Settings</a>
-          </li>
-  
           <li *ngIf="profile" class="nav-item d-sm-none">
-            <a class="nav-link" [routerLink]="[ 'profile' ]" (click)="isCollapsed = true">
+            <a class="nav-link" [routerLink]="[ 'admin', 'profile' ]" (click)="isCollapsed = true">
               <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
               {{ profile.name }}
             </a>
           </li>
 
           <li class="nav-item d-sm-none">
-            <a class="nav-link" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
+            <a class="nav-link" href="#" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
           </li>
         </ul>
   
@@ -56,10 +44,8 @@
             </button>
 
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ 'profile' ]">Your profile</a></li>
-              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ 'settings' ]">Settings</a></li>
-              <li class="divider dropdown-divider"></li>
-              <li role="menuitem"><a class="dropdown-item" (click)="signOut()">Sign out</a></li>
+              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ 'admin', 'profile' ]">Your profile</a></li>
+              <li role="menuitem"><a class="dropdown-item" href="#" (click)="signOut()">Sign out</a></li>
             </ul>
           </div>
         </ul>

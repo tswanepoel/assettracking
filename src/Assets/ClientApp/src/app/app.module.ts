@@ -11,15 +11,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { CallbackComponent } from './callback/callback.component';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CallbackComponent } from './pages/callback/callback.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    CallbackComponent,
-    ProfileComponent
+    HomeComponent,
+    CallbackComponent
   ],
   imports: [
     BrowserModule,
