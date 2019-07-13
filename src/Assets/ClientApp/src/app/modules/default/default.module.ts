@@ -11,14 +11,12 @@ import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultComponent } from './default.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
-import { CallbackComponent } from './pages/callback/callback.component';
 
 @NgModule({
   declarations: [
     DefaultComponent,
     NavbarComponent,
-    HomeComponent,
-    CallbackComponent
+    HomeComponent
   ],
   imports: [
     CommonModule,

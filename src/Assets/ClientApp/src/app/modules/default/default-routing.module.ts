@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DefaultComponent } from './default.component';
 import { HomeComponent } from './pages/home/home.component';
-import { CallbackComponent } from './pages/callback/callback.component';
 
 const routes: Routes = [
   {
@@ -13,10 +12,6 @@ const routes: Routes = [
       {
         path: '',
         component: HomeComponent
-      },
-      {
-        path: 'callback',
-        component: CallbackComponent
       }
     ]
   }

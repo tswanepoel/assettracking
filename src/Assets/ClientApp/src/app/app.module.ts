@@ -10,9 +10,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CallbackComponent } from './pages/callback/callback.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    CallbackComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
