@@ -7,20 +7,22 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { AssetTrackingRoutingModule } from './asset-tracking-routing.module';
-import { AssetTrackingComponent } from './asset-tracking.component';
+import { DefaultRoutingModule } from './default-routing.module';
+import { DefaultComponent } from './default.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CallbackComponent } from './pages/callback/callback.component';
 
 @NgModule({
   declarations: [
-    AssetTrackingComponent,
+    DefaultComponent,
     NavbarComponent,
-    DashboardComponent
+    HomeComponent,
+    CallbackComponent
   ],
   imports: [
     CommonModule,
-    AssetTrackingRoutingModule,
+    DefaultRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
@@ -29,4 +31,4 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     BsDropdownModule.forRoot()
   ]
 })
-export class AssetTrackingModule { }
+export class DefaultModule { }

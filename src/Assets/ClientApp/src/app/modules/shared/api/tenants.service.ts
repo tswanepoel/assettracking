@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+
+import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../../shared/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,4 @@ export class TenantsService {
       })
       .toPromise();
   }
-
 }

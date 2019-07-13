@@ -1,13 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from 'src/app/shared/auth.guard';
+
+import { AuthGuard } from '../shared/auth.guard';
+import { AdministrationComponent } from './administration.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
 const routes: Routes = [
   {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [ AuthGuard ]
+    path: '',
+    component: AdministrationComponent,
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [ AuthGuard ]
+      }
+    ]
   }
 ];
 

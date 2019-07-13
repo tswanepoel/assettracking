@@ -17,12 +17,8 @@
   
       <div class="collapse navbar-collapse" [collapse]="isCollapsed">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item d-sm-none">
-            <input class="form-control my-1" type="search" placeholder="Search" aria-label="Search">
-          </li>
-            
           <li *ngIf="profile" class="nav-item d-sm-none">
-            <a class="nav-link" [routerLink]="[ 'admin', 'profile' ]" (click)="isCollapsed = true">
+            <a class="nav-link" [routerLink]="[ 'profile' ]" (click)="isCollapsed = true">
               <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
               {{ profile.name }}
             </a>
@@ -34,17 +30,13 @@
         </ul>
   
         <ul class="navbar-nav navbar-right d-none d-sm-block">
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </ul>
-
-        <ul class="navbar-nav navbar-right d-none d-sm-block">
           <div class="btn-group d-none d-sm-block" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle" aria-controls="dropdown-basic">
               <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
             </button>
 
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ 'admin', 'profile' ]">Your profile</a></li>
+              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ 'profile' ]">Your profile</a></li>
               <li role="menuitem"><a class="dropdown-item" href="#" (click)="signOut()">Sign out</a></li>
             </ul>
           </div>
