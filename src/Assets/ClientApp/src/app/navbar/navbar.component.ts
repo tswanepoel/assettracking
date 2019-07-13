@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
+import { faGlobe, faBars, faHome, faUserFriends, faSignOutAlt, faCog } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/auth.service';
 
 @Component({
@@ -8,19 +9,23 @@ import { AuthService } from 'src/app/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+
+  title = 'Asset Tracking';
+  appIcon = faGlobe;
+  menuIcon = faBars;
+  dashboardIcon = faHome;
+  contactsIcon = faUserFriends;
+  settingsIcon = faCog;
+  signOutIcon = faSignOutAlt;
+  isCollapsed = true;
+
   isAuthenticated = false;
   profile: any;
 
   private auth0Client: Auth0Client;
 
-  /**
-   * Constructor - inject the AuthService class
-   */
   constructor(private authService: AuthService) {}
 
-  /**
-   * Handle component initialization
-   */
   async ngOnInit() {
     // Get an instance of the Auth0 client
     this.auth0Client = await this.authService.getAuth0Client();
@@ -39,14 +44,14 @@ export class NavbarComponent implements OnInit {
   /**
    * Logs in the user by redirecting to Auth0 for authentication
    */
-  async login() {
+  async signIn() {
     await this.auth0Client.loginWithRedirect({ redirect_uri: `${window.location.origin}/callback` });
   }
 
   /**
    * Logs the user out of the applicaion, as well as on Auth0
    */
-  logout() {
+  signOut() {
     this.auth0Client.logout({
       client_id: this.authService.config.client_id,
       returnTo: window.location.origin
