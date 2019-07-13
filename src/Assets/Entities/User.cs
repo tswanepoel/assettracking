@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace Assets.Entities
 {
@@ -9,10 +8,9 @@ namespace Assets.Entities
         public int Id { get; set; }
         public byte[] Version { get; set; }
         public string UserName { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public byte[] PasswordHash { get; set; }
         public string FullName { get; set; }
-        public string Initials { get; set; }
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public DateTimeOffset? LastAccessedDate { get; set; }

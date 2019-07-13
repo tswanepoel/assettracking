@@ -14,7 +14,8 @@ namespace Assets.Entities.Configurations
             builder.Property(x => x.Version).IsRequired().IsRowVersion();
             builder.Property(x => x.UserName).HasMaxLength(128).IsRequired();
             builder.Property(x => x.FullName).HasMaxLength(128);
-            builder.Property(x => x.Initials).HasMaxLength(128);
+            builder.Property(x => x.FirstName).HasMaxLength(128);
+            builder.Property(x => x.Surname).HasMaxLength(128);
             builder.Property(x => x.Phone).HasMaxLength(128);
             builder.Property(x => x.Email).HasMaxLength(128);
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { TenantsService } from '../tenants.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,10 +9,14 @@ import { AuthService } from '../auth.service';
 })
 export class ProfileComponent implements OnInit {
   profile: any;
+  tenants: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private tenantsService: TenantsService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.authService.profile.subscribe(profile => this.profile = profile);
+    this.tenants = await this.tenantsService.getTenantsMy();
   }
 }

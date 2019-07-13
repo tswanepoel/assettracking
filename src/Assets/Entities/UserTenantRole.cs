@@ -1,6 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Identity;
-
 namespace Assets.Entities
 {
     public class UserTenantRole
