@@ -1,9 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CallbackComponent } from './pages/callback/callback.component';
+
 const routes: Routes = [
   {
-    path: '',
+    path: 'callback',
+    component: CallbackComponent
+  },
+  {
+    path: 'home',
     loadChildren: () => import('./modules/default/default.module').then(m => m.DefaultModule)
   },
   {
@@ -13,6 +19,11 @@ const routes: Routes = [
   {
     path: ':tenant',
     loadChildren: () => import('./modules/asset-tracking/asset-tracking.module').then(m => m.AssetTrackingModule)
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
   }
 ];
 
