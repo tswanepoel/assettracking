@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { faGlobe, faBars, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from 'src/app/shared/auth.service';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
   selector: 'app-navbar',
