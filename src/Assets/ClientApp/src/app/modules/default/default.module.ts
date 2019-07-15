@@ -11,12 +11,16 @@ import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultComponent } from './default.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
+import { FeaturesComponent } from './pages/features/features.component';
+import { PricingComponent } from './pages/pricing/pricing.component';
 
 @NgModule({
   declarations: [
     DefaultComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    FeaturesComponent,
+    PricingComponent
   ],
   imports: [
     CommonModule,

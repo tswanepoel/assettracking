@@ -27,8 +27,8 @@ namespace Assets.Controllers
                    select new Tenant
                    {
                        Href = Url.Action("Get", new { area = tenant.Area }),
-                       Version = tenant.Version,
                        Area = tenant.Area,
+                       Version = tenant.Version,
                        Name = tenant.Name
                    };
         }

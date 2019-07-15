@@ -9,7 +9,7 @@ const routes: Routes = [
     component: CallbackComponent
   },
   {
-    path: 'home',
+    path: '',
     loadChildren: () => import('./modules/default/default.module').then(m => m.DefaultModule)
   },
   {
@@ -19,11 +19,6 @@ const routes: Routes = [
   {
     path: ':tenant',
     loadChildren: () => import('./modules/asset-tracking/asset-tracking.module').then(m => m.AssetTrackingModule)
-  },
-  {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
   }
 ];
 

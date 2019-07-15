@@ -1,35 +1,45 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <a class="navbar-brand" [routerLink]="[ '' ]">
-      <fa-icon [icon]="appIcon" size="lg"></fa-icon>
-      {{ title }}
-    </a>
+    <div class="container">
+      <a class="navbar-brand text-uppercase" [routerLink]="[ '' ]">{{ title }}</a>
 
-    <div *ngIf="!isAuthenticated" class="navbar-nav ml-auto">
-      <button class="btn btn-primary" (click)="signIn()">Sign in</button>
-    </div>
-
-    <ng-container *ngIf="isAuthenticated">
       <button type="button" class="navbar-toggler collapsed" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <fa-icon [icon]="menuIcon"></fa-icon>
+        <span class="navbar-toggler-icon"></span>
       </button>
   
       <div class="collapse navbar-collapse" [collapse]="isCollapsed">
         <ul class="navbar-nav mr-auto">
-          <li *ngIf="profile" class="nav-item d-sm-none">
-            <a class="nav-link" [routerLink]="[ '/admin/profile' ]" (click)="isCollapsed = true">
-              <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
-              {{ profile.name }}
-            </a>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="[ '' ]" (click)="isCollapsed = true">Home</a>
           </li>
 
-          <li class="nav-item d-sm-none">
-            <a class="nav-link" href="#" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="[ '/features' ]" (click)="isCollapsed = true">Features</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="[ '/pricing' ]" (click)="isCollapsed = true">Pricing</a>
+          </li>
+
+          <ng-container *ngIf="isAuthenticated">
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" [routerLink]="[ '/admin/profile' ]" (click)="isCollapsed = true">
+                <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
+                {{ profile.name }}
+              </a>
+            </li>
+
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" href="#" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
+            </li>
+          </ng-container>
         </ul>
+
+        <div *ngIf="!isAuthenticated" class="navbar-nav ml-auto">
+          <button class="btn btn-primary" (click)="signIn()">Sign in</button>
+        </div>
   
-        <ul class="navbar-nav navbar-right d-none d-sm-block">
+        <ul *ngIf="isAuthenticated" class="navbar-nav navbar-right d-none d-sm-block">
           <div class="btn-group d-none d-sm-block" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle" aria-controls="dropdown-basic">
               <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
@@ -42,6 +52,6 @@
           </div>
         </ul>
       </div>
-    </ng-container>
+    </div>
   </nav>
 </header>
