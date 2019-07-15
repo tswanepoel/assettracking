@@ -1,55 +1,55 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <a class="navbar-brand" [routerLink]="[ '' ]">
-      <fa-icon [icon]="appIcon" size="lg"></fa-icon>
-      {{ title }}
-    </a>
+    <div class="container">
+      <a class="navbar-brand text-uppercase" [routerLink]="[ '' ]">{{ title }}</a>
 
-    <div *ngIf="!isAuthenticated" class="navbar-nav ml-auto">
-      <button class="btn btn-primary" (click)="signIn()">Sign in</button>
-    </div>
-
-    <ng-container *ngIf="isAuthenticated">
-      <button type="button" class="navbar-toggler collapsed" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <fa-icon [icon]="menuIcon"></fa-icon>
-      </button>
-  
-      <div class="collapse navbar-collapse" [collapse]="isCollapsed">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item d-sm-none">
-            <input class="form-control my-1" type="search" placeholder="Search" aria-label="Search">
-          </li>
-            
-          <li *ngIf="profile" class="nav-item d-sm-none">
-            <a class="nav-link" [routerLink]="[ '../admin/profile' ]" (click)="isCollapsed = true">
-              <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
-              {{ profile.name }}
-            </a>
-          </li>
-
-          <li class="nav-item d-sm-none">
-            <a class="nav-link" href="#" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
-          </li>
-        </ul>
-  
-        <ul class="navbar-nav navbar-right d-none d-sm-block">
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </ul>
-
-        <ul class="navbar-nav navbar-right d-none d-sm-block">
-          <div class="btn-group d-none d-sm-block" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle" aria-controls="dropdown-basic">
-              <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
-            </button>
-
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem"><a class="dropdown-item" [routerLink]="[ '../admin/profile' ]">Your profile</a></li>
-              <li role="menuitem"><a class="dropdown-item" href="#" (click)="signOut()">Sign out</a></li>
-            </ul>
-          </div>
-        </ul>
+      <div *ngIf="!isAuthenticated" class="navbar-nav ml-auto">
+        <button class="btn btn-primary" (click)="signIn()">Sign in</button>
       </div>
-    </ng-container>
+
+      <ng-container *ngIf="isAuthenticated">
+        <button type="button" class="navbar-toggler collapsed" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+          <ul class="navbar-nav mr-auto">
+            <form class="form-inline my-2 my-lg-0 d-sm-none">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search">
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+              
+            <li *ngIf="profile" class="nav-item d-sm-none">
+              <a class="nav-link" [routerLink]="[ '../admin/profile' ]" (click)="isCollapsed = true">
+                <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
+                {{ profile.name }}
+              </a>
+            </li>
+
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" href="#" (click)="signOut()"><fa-icon [icon]="signOutIcon" size="lg" [fixedWidth]="true"></fa-icon> Sign out</a>
+            </li>
+          </ul>
+    
+          <form class="form-inline my-lg-0 d-none d-sm-block">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+          </form>
+
+          <ul class="navbar-nav navbar-right d-none d-sm-block">
+            <div class="btn-group d-none d-sm-block" dropdown>
+              <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle" aria-controls="dropdown-basic">
+                <img *ngIf="profile" class="profile-pic" [src]="profile.picture" [title]="profile.name" width="26.667px" height="26.667px">
+              </button>
+
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem"><a class="dropdown-item" [routerLink]="[ '../admin/profile' ]">Your profile</a></li>
+                <li role="menuitem"><a class="dropdown-item" href="#" (click)="signOut()">Sign out</a></li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </ng-container>
+    </div>
   </nav>
 </header>
