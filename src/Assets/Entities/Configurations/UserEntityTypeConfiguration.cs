@@ -8,9 +8,9 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("User");
-            builder.HasKey(x => x.Id).HasName("PK_User").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_User").IsClustered();
             builder.HasAlternateKey(x => x.UserName).HasName("AK_User_UserName");
-            builder.Property(x => x.Id).UseSqlServerIdentityColumn();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Version).IsRequired().IsRowVersion();
             builder.Property(x => x.UserName).HasMaxLength(128).IsRequired();
             builder.Property(x => x.FullName).HasMaxLength(128);

@@ -8,9 +8,9 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<Blob> builder)
         {
             builder.ToTable("Blob");
-            builder.HasKey(x => x.Id).HasName("PK_Blob").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_Blob").IsClustered();
             builder.HasAlternateKey(x => x.Guid).HasName("AK_Blob_Guid");
-            builder.Property(x => x.Id).UseSqlServerIdentityColumn();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.ContentType).HasMaxLength(128).IsRequired();
             builder.Property(x => x.Content).IsRequired();
         }

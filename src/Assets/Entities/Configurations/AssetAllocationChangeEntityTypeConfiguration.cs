@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<AssetAllocationChange> builder)
         {
             builder.ToTable("AssetAllocationChange");
-            builder.HasKey(x => new { x.AssetId, x.ContactId }).HasName("PK_AssetAllocationChange").ForSqlServerIsClustered();
+            builder.HasKey(x => new { x.AssetId, x.ContactId }).HasName("PK_AssetAllocationChange").IsClustered();
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();
             builder.Property(x => x.ModifiedUser).HasMaxLength(128).IsRequired();
             builder.Property(x => x.DeletedUser).HasMaxLength(128);

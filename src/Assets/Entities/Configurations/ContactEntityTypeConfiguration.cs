@@ -8,9 +8,9 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
             builder.ToTable("Contact");
-            builder.HasKey(x => x.Id).HasName("PK_Contact").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_Contact").IsClustered();
             builder.HasAlternateKey(x => x.Guid).HasName("AK_Contact_Guid");
-            builder.Property(x => x.Id).UseSqlServerIdentityColumn();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Version).IsRequired().IsRowVersion();
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();
             builder.Property(x => x.ModifiedUser).HasMaxLength(128).IsRequired();
