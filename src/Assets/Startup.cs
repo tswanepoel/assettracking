@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +29,7 @@ namespace Assets
         {
             services.AddDbContext<AssetsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AssetsDb")));
 
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
 
             services.AddAuthorization(options =>
@@ -85,10 +87,10 @@ namespace Assets
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Assets API V1");
-            });
+            app.UseReDoc(c =>
+			{
+				c.SpecUrl("../swagger/v1/swagger.json");
+			});
             
             app.UseRouting();
             app.UseAuthentication();
