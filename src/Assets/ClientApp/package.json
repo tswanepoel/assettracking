@@ -1,11 +1,11 @@
 {
-  "name": "Assets",
+  "name": "assets",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run Assets:server:dev",
+    "build:ssr": "ng run assets:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

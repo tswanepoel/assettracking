@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<AssetComment> builder)
         {
             builder.ToTable("AssetComment");
-            builder.HasKey(x => x.Id).HasName("PK_AssetComment").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_AssetComment").IsClustered();
             builder.HasAlternateKey(x => x.Guid).HasName("AK_AssetComment_Guid");
             builder.Property(x => x.Text).HasMaxLength(128).IsRequired();
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();

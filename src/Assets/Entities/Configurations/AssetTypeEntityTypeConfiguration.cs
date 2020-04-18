@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<AssetType> builder)
         {
             builder.ToTable("AssetType");
-            builder.HasKey(x => x.Id).HasName("PK_AssetType").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_AssetType").IsClustered();
             builder.HasAlternateKey(x => x.Name).HasName("AK_AssetType_Name");
             builder.Property(x => x.Name).HasMaxLength(128).IsRequired();
 

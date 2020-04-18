@@ -8,9 +8,9 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<Asset> builder)
         {
             builder.ToTable("Asset");
-            builder.HasKey(x => x.Id).HasName("PK_Asset").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_Asset").IsClustered();
             builder.HasAlternateKey(x => x.Guid).HasName("AK_Asset_Guid");
-            builder.Property(x => x.Id).UseSqlServerIdentityColumn();
+            builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Version).IsRequired().IsRowVersion();
             builder.Property(x => x.Description).HasMaxLength(1024);
             builder.Property(x => x.SerialNumber).HasMaxLength(128);

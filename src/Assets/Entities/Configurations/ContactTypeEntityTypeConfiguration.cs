@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<ContactType> builder)
         {
             builder.ToTable("ContactType");
-            builder.HasKey(x => x.Id).HasName("PK_ContactType").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_ContactType").IsClustered();
             builder.HasAlternateKey(x => x.Name).HasName("AK_ContactType_Name");
             builder.Property(x => x.Name).HasMaxLength(128).IsRequired();
 

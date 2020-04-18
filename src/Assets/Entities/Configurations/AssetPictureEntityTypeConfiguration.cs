@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<AssetPicture> builder)
         {
             builder.ToTable("AssetPicture");
-            builder.HasKey(x => new { x.AssetId, x.PictureId }).HasName("PK_AssetPicture").ForSqlServerIsClustered();
+            builder.HasKey(x => new { x.AssetId, x.PictureId }).HasName("PK_AssetPicture").IsClustered();
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();
             builder.Property(x => x.ModifiedUser).HasMaxLength(128).IsRequired();
             builder.Property(x => x.DeletedUser).HasMaxLength(128);

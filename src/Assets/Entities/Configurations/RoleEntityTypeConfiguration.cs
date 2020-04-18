@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.ToTable("Role");
-            builder.HasKey(x => x.Id).HasName("PK_Role").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_Role").IsClustered();
             builder.HasAlternateKey(x => x.Name).HasName("AK_Role_Name");
             builder.Property(x => x.Name).HasMaxLength(128).IsRequired();
 

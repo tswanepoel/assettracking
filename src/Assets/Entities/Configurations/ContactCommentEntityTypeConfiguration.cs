@@ -8,7 +8,7 @@ namespace Assets.Entities.Configurations
         public void Configure(EntityTypeBuilder<ContactComment> builder)
         {
             builder.ToTable("ContactComment");
-            builder.HasKey(x => x.Id).HasName("PK_ContactComment").ForSqlServerIsClustered();
+            builder.HasKey(x => x.Id).HasName("PK_ContactComment").IsClustered();
             builder.HasAlternateKey(x => x.Guid).HasName("AK_ContactComment_Guid");
             builder.Property(x => x.Text).HasMaxLength(128).IsRequired();
             builder.Property(x => x.CreatedUser).HasMaxLength(128).IsRequired();
