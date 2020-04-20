@@ -26,7 +26,7 @@ namespace Assets.Entities
         public string DeletedUser { get; set; }
         public virtual AssetType AssetType { get; set; }
         public virtual Computer Computer { get; set; }
-        public virtual Screen Screen { get; set; }
+        public virtual Monitor Monitor { get; set; }
         public virtual Phone Phone { get; set; }
         public virtual Tenant Tenant { get; set; }
         public virtual ICollection<AssetPicture> Pictures { get; set; }
