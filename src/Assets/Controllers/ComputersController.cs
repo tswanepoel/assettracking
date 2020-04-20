@@ -77,11 +77,7 @@ namespace Assets
                 from computer in _db.Computers
                 where computer.Asset.TenantId == tenantId
                     && computer.Asset.DeletedDate == null
-                let allocatedContactHref = computer.Asset.AllocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Person
-                    ? Url.Action("GetAsync", "People", new { tenant = computer.Asset.AllocatedContact.Tenant.Area, guid = computer.Asset.AllocatedContact.Guid })
-                    : (computer.Asset.AllocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Organisation
-                        ? Url.Action("GetAsync", "Organisations", new { tenant = computer.Asset.AllocatedContact.Tenant.Area, guid = computer.Asset.AllocatedContact.Guid })
-                        : null)
+                let allocatedContact = computer.Asset.AllocatedContact
                 select new Computer
                 {
                     Href = Url.Action("GetAsync", new { tenant = computer.Asset.Tenant.Area, guid = computer.Asset.Guid }),
@@ -94,11 +90,15 @@ namespace Assets
                     Tag = computer.Asset.Tag,
                     Processor = computer.Processor,
                     Memory = computer.Memory,
-                    AllocatedContact = computer.Asset.AllocatedContact != null
+                    AllocatedContact = allocatedContact != null
                         ? new ContactRef
                         {
-                            Href = allocatedContactHref,
-                            Name = computer.Asset.AllocatedContact.Name
+                            Href = allocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Person
+                                ? Url.Action("GetAsync", "People", new { tenant = allocatedContact.Tenant.Area, guid = allocatedContact.Guid })
+                                : (allocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Organisation
+                                    ? Url.Action("GetAsync", "Organisations", new { tenant = allocatedContact.Tenant.Area, guid = allocatedContact.Guid })
+                                    : null),
+                            Name = allocatedContact.Name
                         }
                         : null
                 }
