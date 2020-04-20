@@ -1,7 +1,10 @@
 ﻿using Assets.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Assets.Controllers
 {
@@ -15,22 +18,42 @@ namespace Assets.Controllers
             _db = db;
         }
 
-        [HttpGet("my")]
+        [HttpGet("{area}")]
         [Authorize(Policy = "Authenticated")]
-        public IQueryable<Tenant> Get()
+        public async Task<ActionResult<Tenant>> GetAsync(string area)
         {
-            return from user in _db.Users
-                   where user.UserName == User.Identity.Name
-                   from tenantRole in user.TenantRoles
-                   let tenant = tenantRole.Tenant
-                   where tenant.DeletedDate == null
-                   select new Tenant
-                   {
-                       Href = Url.Action("Get", new { area = tenant.Area }),
-                       Area = tenant.Area,
-                       Version = tenant.Version,
-                       Name = tenant.Name
-                   };
+            Tenant model = await Query().SingleOrDefaultAsync(x => x.Area == area);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(model);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "Authenticated")]
+        public async Task<ActionResult<IList<Tenant>>> GetAsync()
+        {
+            return Ok(await Query().ToListAsync());
+        }
+
+        private IQueryable<Tenant> Query()
+        {
+            return
+            (
+                from tenant in _db.Tenants
+                where tenant.DeletedDate == null
+                    && tenant.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
+                select new Tenant
+                {
+                    Href = Url.Action("GetAsync", new { area = tenant.Area }),
+                    Area = tenant.Area,
+                    Version = tenant.Version,
+                    Name = tenant.Name
+                }
+            );
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Assets.Entities
@@ -7,6 +6,5 @@ namespace Assets.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

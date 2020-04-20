@@ -13,12 +13,12 @@ export class TenantsService {
     private httpClient: HttpClient
   ) { }
 
-  async getMyTenants(): Promise<any> {
+  async getTenants(): Promise<any> {
     const client = await this.authService.getAuth0Client();
     const token = await client.getTokenSilently();
 
     return this.httpClient
-      .get('/api/tenants/my', {
+      .get('/api/tenants', {
         headers: {
           Authorization: `Bearer ${token}`
         }

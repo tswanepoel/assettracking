@@ -17,6 +17,6 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit() {
     this.authService.profile.subscribe(profile => this.profile = profile);
-    this.tenants = await this.tenantsService.getMyTenants();
+    this.tenants = await this.tenantsService.getTenants();
   }
 }

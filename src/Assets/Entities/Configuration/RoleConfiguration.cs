@@ -24,8 +24,7 @@ namespace Assets.Entities.Configurations
                 new[]
                 {
                     new ContactType { Id = 1, Name = "Administrator" },
-                    new ContactType { Id = 2, Name = "Manager" },
-                    new ContactType { Id = 3, Name = "Reader" }
+                    new ContactType { Id = 2, Name = "Manager" }
                 });
         }
     }

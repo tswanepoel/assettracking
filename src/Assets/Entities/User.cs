@@ -20,7 +20,5 @@ namespace Assets.Entities
         public string ModifiedUser { get; set; }
         public DateTimeOffset? DeletedDate { get; set; }
         public string DeletedUser { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
-        public virtual ICollection<UserTenantRole> TenantRoles { get; set; }
     }
 }
