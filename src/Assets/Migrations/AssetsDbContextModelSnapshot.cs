@@ -15,7 +15,7 @@ namespace Assets.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -23,56 +23,77 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AllocatedContactId");
+                    b.Property<int?>("AllocatedContactId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset?>("AllocatedDate");
+                    b.Property<DateTimeOffset?>("AllocatedDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("AllocatedUser");
+                    b.Property<string>("AllocatedUser")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AssetTypeId");
+                    b.Property<int>("AssetTypeId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(1024)")
                         .HasMaxLength(1024);
 
-                    b.Property<Guid>("Guid");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Make")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Model")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("SerialNumber")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Tag")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<int>("TenantId");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id")
                         .HasName("PK_Asset")
@@ -97,25 +118,33 @@ namespace Assets.Migrations
 
             modelBuilder.Entity("Assets.Entities.AssetAllocationChange", b =>
                 {
-                    b.Property<int>("AssetId");
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("ContactId");
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("AssetId", "ContactId")
@@ -131,31 +160,41 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AssetId");
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid>("Guid");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Text")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id")
@@ -172,25 +211,33 @@ namespace Assets.Migrations
 
             modelBuilder.Entity("Assets.Entities.AssetPicture", b =>
                 {
-                    b.Property<int>("AssetId");
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PictureId");
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("AssetId", "PictureId")
@@ -204,10 +251,12 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id")
@@ -228,7 +277,12 @@ namespace Assets.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Screen"
+                            Name = "Monitor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Phone"
                         });
                 });
 
@@ -236,16 +290,22 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<byte[]>("Content")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid>("Guid");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_Blob")
@@ -259,11 +319,14 @@ namespace Assets.Migrations
 
             modelBuilder.Entity("Assets.Entities.Computer", b =>
                 {
-                    b.Property<int>("ComputerId");
+                    b.Property<int>("ComputerId")
+                        .HasColumnType("int");
 
-                    b.Property<long?>("Memory");
+                    b.Property<long?>("Memory")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Processor")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("ComputerId")
@@ -277,37 +340,51 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ContactTypeId");
+                    b.Property<int>("ContactTypeId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid>("Guid");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TenantId");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id")
                         .HasName("PK_Contact")
@@ -329,31 +406,41 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ContactId");
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid>("Guid");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Text")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id")
@@ -370,25 +457,33 @@ namespace Assets.Migrations
 
             modelBuilder.Entity("Assets.Entities.ContactPicture", b =>
                 {
-                    b.Property<int>("ContactId");
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("PictureId");
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("ContactId", "PictureId")
@@ -402,10 +497,12 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id")
@@ -430,16 +527,35 @@ namespace Assets.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Assets.Entities.Monitor", b =>
+                {
+                    b.Property<int>("MonitorId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("SizeInches")
+                        .HasColumnType("DECIMAL(8, 1)");
+
+                    b.HasKey("MonitorId")
+                        .HasName("PK_Monitor")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.ToTable("Monitor");
+                });
+
             modelBuilder.Entity("Assets.Entities.Phone", b =>
                 {
-                    b.Property<int>("PhoneId");
+                    b.Property<int>("PhoneId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<long?>("Memory");
+                    b.Property<long?>("Memory")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Processor")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("PhoneId")
@@ -453,10 +569,12 @@ namespace Assets.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id")
@@ -478,61 +596,54 @@ namespace Assets.Migrations
                         {
                             Id = 2,
                             Name = "Manager"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Reader"
                         });
-                });
-
-            modelBuilder.Entity("Assets.Entities.Screen", b =>
-                {
-                    b.Property<int>("ScreenId");
-
-                    b.Property<decimal?>("SizeInches")
-                        .HasColumnType("DECIMAL(8, 1)");
-
-                    b.HasKey("ScreenId")
-                        .HasName("PK_Screen")
-                        .HasAnnotation("SqlServer:Clustered", true);
-
-                    b.ToTable("Screen");
                 });
 
             modelBuilder.Entity("Assets.Entities.Tenant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Area")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id")
                         .HasName("PK_Tenant")
@@ -547,54 +658,93 @@ namespace Assets.Migrations
                     b.ToTable("Tenant");
                 });
 
+            modelBuilder.Entity("Assets.Entities.TenantUserRole", b =>
+                {
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TenantId", "UserId", "RoleId")
+                        .HasName("PK_TenantUserRole")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TenantUserRole");
+                });
+
             modelBuilder.Entity("Assets.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("DeletedDate");
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTimeOffset?>("LastAccessedDate");
+                    b.Property<DateTimeOffset?>("LastAccessedDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("ModifiedDate");
+                    b.Property<DateTimeOffset>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("UserName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id")
                         .HasName("PK_User")
@@ -604,38 +754,6 @@ namespace Assets.Migrations
                         .HasName("AK_User_UserName");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Assets.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("PK_UserRole")
-                        .HasAnnotation("SqlServer:Clustered", true);
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRole");
-                });
-
-            modelBuilder.Entity("Assets.Entities.UserTenantRole", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("TenantId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "TenantId", "RoleId")
-                        .HasName("PK_UserTenantRole")
-                        .HasAnnotation("SqlServer:Clustered", true);
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserTenantRole");
                 });
 
             modelBuilder.Entity("Assets.Entities.Asset", b =>
@@ -650,13 +768,15 @@ namespace Assets.Migrations
                         .WithMany("Assets")
                         .HasForeignKey("AssetTypeId")
                         .HasConstraintName("FK_Asset_AssetType")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Tenant", "Tenant")
                         .WithMany("Assets")
                         .HasForeignKey("TenantId")
                         .HasConstraintName("FK_Asset_Tenant")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetAllocationChange", b =>
@@ -665,13 +785,15 @@ namespace Assets.Migrations
                         .WithMany("AllocationChanges")
                         .HasForeignKey("AssetId")
                         .HasConstraintName("FK_AssetAllocationChange_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Contact", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId")
                         .HasConstraintName("FK_AssetAllocationChange_Contact")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetComment", b =>
@@ -680,7 +802,8 @@ namespace Assets.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("AssetId")
                         .HasConstraintName("FK_AssetComment_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetPicture", b =>
@@ -689,13 +812,15 @@ namespace Assets.Migrations
                         .WithMany("Pictures")
                         .HasForeignKey("AssetId")
                         .HasConstraintName("FK_AssetPicture_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Blob", "Picture")
                         .WithMany()
                         .HasForeignKey("AssetId")
                         .HasConstraintName("FK_AssetPicture_Blob")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.Computer", b =>
@@ -704,7 +829,8 @@ namespace Assets.Migrations
                         .WithOne("Computer")
                         .HasForeignKey("Assets.Entities.Computer", "ComputerId")
                         .HasConstraintName("FK_Computer_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.Contact", b =>
@@ -713,13 +839,15 @@ namespace Assets.Migrations
                         .WithMany("Contacts")
                         .HasForeignKey("ContactTypeId")
                         .HasConstraintName("FK_Contact_ContactType")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Tenant", "Tenant")
                         .WithMany("Contacts")
                         .HasForeignKey("TenantId")
                         .HasConstraintName("FK_Contact_Tenant")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.ContactComment", b =>
@@ -728,7 +856,8 @@ namespace Assets.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("ContactId")
                         .HasConstraintName("FK_ContactComment_Contact")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.ContactPicture", b =>
@@ -737,13 +866,25 @@ namespace Assets.Migrations
                         .WithMany()
                         .HasForeignKey("ContactId")
                         .HasConstraintName("FK_ContactPicture_Blob")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Contact", "Contact")
                         .WithMany("Pictures")
                         .HasForeignKey("ContactId")
                         .HasConstraintName("FK_ContactPicture_Contact")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Assets.Entities.Monitor", b =>
+                {
+                    b.HasOne("Assets.Entities.Asset", "Asset")
+                        .WithOne("Monitor")
+                        .HasForeignKey("Assets.Entities.Monitor", "MonitorId")
+                        .HasConstraintName("FK_Monitor_Asset")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Assets.Entities.Phone", b =>
@@ -752,52 +893,32 @@ namespace Assets.Migrations
                         .WithOne("Phone")
                         .HasForeignKey("Assets.Entities.Phone", "PhoneId")
                         .HasConstraintName("FK_Phone_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Assets.Entities.Screen", b =>
-                {
-                    b.HasOne("Assets.Entities.Asset", "Asset")
-                        .WithOne("Screen")
-                        .HasForeignKey("Assets.Entities.Screen", "ScreenId")
-                        .HasConstraintName("FK_Screen_Asset")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Assets.Entities.UserRole", b =>
-                {
-                    b.HasOne("Assets.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_UserRole_Role")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Assets.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_UserRole_User")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Assets.Entities.UserTenantRole", b =>
+            modelBuilder.Entity("Assets.Entities.TenantUserRole", b =>
                 {
                     b.HasOne("Assets.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .HasConstraintName("FK_UserTenantRole_Role")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_UserTenantRole_Tenant")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("UserRoles")
+                        .HasForeignKey("TenantId")
+                        .HasConstraintName("FK_TenantUserRole_Tenant")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Assets.Entities.User", "User")
-                        .WithMany("TenantRoles")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_UserTenantRole_User")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_TenantUserRole_User")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

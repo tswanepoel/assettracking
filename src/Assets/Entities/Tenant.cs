@@ -17,5 +17,6 @@ namespace Assets.Entities
         public string DeletedUser { get; set; }
         public virtual ICollection<Asset> Assets { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
+        public virtual ICollection<TenantUserRole> UserRoles { get; set; }
     }
 }

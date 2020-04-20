@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Assets.Migrations
@@ -13,7 +12,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
@@ -28,7 +27,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     ContentType = table.Column<string>(maxLength: 128, nullable: false),
                     Content = table.Column<byte[]>(nullable: false)
@@ -45,7 +44,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
@@ -60,7 +59,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
@@ -75,7 +74,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Version = table.Column<byte[]>(rowVersion: true, nullable: false),
                     Area = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
@@ -99,13 +98,12 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Version = table.Column<byte[]>(rowVersion: true, nullable: false),
                     UserName = table.Column<string>(maxLength: 128, nullable: false),
-                    PasswordSalt = table.Column<byte[]>(nullable: true),
-                    PasswordHash = table.Column<byte[]>(nullable: true),
                     FullName = table.Column<string>(maxLength: 128, nullable: true),
-                    Initials = table.Column<string>(maxLength: 128, nullable: true),
+                    FirstName = table.Column<string>(maxLength: 128, nullable: true),
+                    Surname = table.Column<string>(maxLength: 128, nullable: true),
                     Phone = table.Column<string>(maxLength: 128, nullable: true),
                     Email = table.Column<string>(maxLength: 128, nullable: true),
                     LastAccessedDate = table.Column<DateTimeOffset>(nullable: true),
@@ -128,7 +126,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TenantId = table.Column<int>(nullable: false),
                     ContactTypeId = table.Column<int>(nullable: false),
                     Guid = table.Column<Guid>(nullable: false),
@@ -161,41 +159,16 @@ namespace Assets.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
+                name: "TenantUserRole",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId })
-                        .Annotation("SqlServer:Clustered", true);
-                    table.ForeignKey(
-                        name: "FK_UserRole_Role",
-                        column: x => x.RoleId,
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_User",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserTenantRole",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(nullable: false),
                     TenantId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTenantRole", x => new { x.UserId, x.TenantId, x.RoleId })
+                    table.PrimaryKey("PK_TenantUserRole", x => new { x.TenantId, x.UserId, x.RoleId })
                         .Annotation("SqlServer:Clustered", true);
                     table.ForeignKey(
                         name: "FK_UserTenantRole_Role",
@@ -204,13 +177,13 @@ namespace Assets.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTenantRole_Tenant",
-                        column: x => x.UserId,
+                        name: "FK_TenantUserRole_Tenant",
+                        column: x => x.TenantId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTenantRole_User",
+                        name: "FK_TenantUserRole_User",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -222,7 +195,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TenantId = table.Column<int>(nullable: false),
                     AssetTypeId = table.Column<int>(nullable: false),
                     Guid = table.Column<Guid>(nullable: false),
@@ -272,7 +245,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     ContactId = table.Column<int>(nullable: false),
                     Text = table.Column<string>(maxLength: 128, nullable: false),
@@ -363,7 +336,7 @@ namespace Assets.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     AssetId = table.Column<int>(nullable: false),
                     Text = table.Column<string>(maxLength: 128, nullable: false),
@@ -439,6 +412,25 @@ namespace Assets.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Monitor",
+                columns: table => new
+                {
+                    MonitorId = table.Column<int>(nullable: false),
+                    SizeInches = table.Column<decimal>(type: "DECIMAL(8, 1)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Monitor", x => x.MonitorId)
+                        .Annotation("SqlServer:Clustered", true);
+                    table.ForeignKey(
+                        name: "FK_Monitor_Asset",
+                        column: x => x.MonitorId,
+                        principalTable: "Asset",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Phone",
                 columns: table => new
                 {
@@ -459,32 +451,14 @@ namespace Assets.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Screen",
-                columns: table => new
-                {
-                    ScreenId = table.Column<int>(nullable: false),
-                    SizeInches = table.Column<decimal>(type: "DECIMAL(8, 1)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Screen", x => x.ScreenId)
-                        .Annotation("SqlServer:Clustered", true);
-                    table.ForeignKey(
-                        name: "FK_Screen_Asset",
-                        column: x => x.ScreenId,
-                        principalTable: "Asset",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AssetType",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Computer" },
-                    { 2, "Screen" }
+                    { 2, "Monitor" },
+                    { 3, "Phone" }
                 });
 
             migrationBuilder.InsertData(
@@ -502,8 +476,7 @@ namespace Assets.Migrations
                 values: new object[,]
                 {
                     { 1, "Administrator" },
-                    { 2, "Manager" },
-                    { 3, "Reader" }
+                    { 2, "Manager" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -554,14 +527,14 @@ namespace Assets.Migrations
                 column: "ContactId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId",
-                table: "UserRole",
+                name: "IX_TenantUserRole_RoleId",
+                table: "TenantUserRole",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTenantRole_RoleId",
-                table: "UserTenantRole",
-                column: "RoleId");
+                name: "IX_TenantUserRole_UserId",
+                table: "TenantUserRole",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -585,16 +558,13 @@ namespace Assets.Migrations
                 name: "ContactPicture");
 
             migrationBuilder.DropTable(
+                name: "Monitor");
+
+            migrationBuilder.DropTable(
                 name: "Phone");
 
             migrationBuilder.DropTable(
-                name: "Screen");
-
-            migrationBuilder.DropTable(
-                name: "UserRole");
-
-            migrationBuilder.DropTable(
-                name: "UserTenantRole");
+                name: "TenantUserRole");
 
             migrationBuilder.DropTable(
                 name: "Blob");

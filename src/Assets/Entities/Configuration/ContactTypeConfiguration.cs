@@ -23,8 +23,8 @@ namespace Assets.Entities.Configurations
             builder.HasData(
                 new[]
                 {
-                    new ContactType { Id = 1, Name = "Person" },
-                    new ContactType { Id = 2, Name = "Organisation" }
+                    new ContactType { Id = (int)ContactTypeId.Person, Name = "Person" },
+                    new ContactType { Id = (int)ContactTypeId.Organisation, Name = "Organisation" }
                 });
         }
     }
