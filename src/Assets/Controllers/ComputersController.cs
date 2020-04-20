@@ -20,23 +20,9 @@ namespace Assets
             _db = db;
         }
 
-        [HttpGet]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<IList<Computer>>> GetAsync([FromRoute] string tenant)
-        {
-            int? tenantId = await GetTenantIdAsync(tenant);
-
-            if (tenantId == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(await Query((int)tenantId).ToListAsync());
-        }
-
         [HttpGet("guid")]
         [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<Computer>> GetAsync([FromRoute] string tenant, Guid guid)
+        public async Task<ActionResult<Computer>> GetAsync([FromRoute] string tenant, [FromRoute] Guid guid)
         {
             int? tenantId = await GetTenantIdAsync(tenant);
 
@@ -53,6 +39,20 @@ namespace Assets
             }
 
             return Ok(model);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "Authenticated")]
+        public async Task<ActionResult<IList<Computer>>> GetAsync([FromRoute] string tenant)
+        {
+            int? tenantId = await GetTenantIdAsync(tenant);
+
+            if (tenantId == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(await Query((int)tenantId).ToListAsync());
         }
 
         private async Task<int?> GetTenantIdAsync(string tenant)

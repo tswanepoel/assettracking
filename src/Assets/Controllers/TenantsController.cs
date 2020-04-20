@@ -18,9 +18,16 @@ namespace Assets.Controllers
             _db = db;
         }
 
+        [HttpGet]
+        [Authorize(Policy = "Authenticated")]
+        public async Task<ActionResult<IList<Tenant>>> GetAsync()
+        {
+            return Ok(await Query().ToListAsync());
+        }
+
         [HttpGet("{area}")]
         [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<Tenant>> GetAsync(string area)
+        public async Task<ActionResult<Tenant>> GetAsync([FromRoute] string area)
         {
             Tenant model = await Query().SingleOrDefaultAsync(x => x.Area == area);
 
@@ -30,13 +37,6 @@ namespace Assets.Controllers
             }
 
             return Ok(model);
-        }
-
-        [HttpGet]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<IList<Tenant>>> GetAsync()
-        {
-            return Ok(await Query().ToListAsync());
         }
 
         private IQueryable<Tenant> Query()
