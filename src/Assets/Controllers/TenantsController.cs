@@ -1,4 +1,5 @@
 ﻿using Assets.Models;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,27 +10,45 @@ using System.Threading.Tasks;
 namespace Assets.Controllers
 {
     [Route("api/[controller]")]
-    public class TenantsController : Controller
+    [ApiController]
+    public class TenantsController : ControllerBase
     {
         private readonly Entities.AssetsDbContext _db;
+        private readonly TypeAdapterConfig _adapterConfig;
+        private readonly HrefHelper _href;
 
-        public TenantsController(Entities.AssetsDbContext db)
+        public TenantsController(Entities.AssetsDbContext db, TypeAdapterConfig adapterConfig, HrefHelper href)
         {
             _db = db;
+            _adapterConfig = adapterConfig;
+            _href = href;
         }
 
         [HttpGet]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<IList<Tenant>>> GetAsync()
+        public async Task<ActionResult<IList<Tenant>>> SearchAsync()
         {
-            return Ok(await Query().ToListAsync());
+            List<Tenant> models;
+
+            using (var scope = new MapContextScope())
+            {
+                scope.Context.Parameters["href"] = _href;
+                models = await Query().ToListAsync();
+            }
+
+            return Ok(models);
         }
 
         [HttpGet("{area}")]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<Tenant>> GetAsync([FromRoute] string area)
+        [Authorize]
+        public async Task<ActionResult<Tenant>> GetAsync(string area)
         {
-            Tenant model = await Query().SingleOrDefaultAsync(x => x.Area == area);
+            Tenant model;
+
+            using (var scope = new MapContextScope())
+            {
+                scope.Context.Parameters["href"] = _href;
+                model = await Query().SingleOrDefaultAsync(x => x.Area == area);
+            }
 
             if (model == null)
             {
@@ -46,14 +65,8 @@ namespace Assets.Controllers
                 from tenant in _db.Tenants
                 where tenant.DeletedDate == null
                     && tenant.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
-                select new Tenant
-                {
-                    Href = Url.Action("GetAsync", new { area = tenant.Area }),
-                    Area = tenant.Area,
-                    Version = tenant.Version,
-                    Name = tenant.Name
-                }
-            );
+                select tenant
+            ).ProjectToType<Tenant>(_adapterConfig);
         }
     }
 }

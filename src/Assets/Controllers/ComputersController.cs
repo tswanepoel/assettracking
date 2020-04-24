@@ -3,26 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Assets.Models;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Assets
 {
-    [Route("api/{tenant}/[controller]")]
+    [Route("api/tenants/{tenant}/[controller]")]
+    [Authorize]
     [ApiController]
     public class ComputersController : ControllerBase
     {
         private readonly Entities.AssetsDbContext _db;
+        private readonly TypeAdapterConfig _adapterConfig;
+        private readonly HrefHelper _href;
 
-        public ComputersController(Entities.AssetsDbContext db)
+        public ComputersController(Entities.AssetsDbContext db, TypeAdapterConfig adapterConfig, HrefHelper href)
         {
             _db = db;
+            _adapterConfig = adapterConfig;
+            _href = href;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IList<Computer>>> SearchAsync(string tenant)
+        {
+            int? tenantId = await GetTenantIdAsync(tenant);
+
+            if (tenantId == null)
+            {
+                return NotFound();
+            }
+
+            List<Computer> models;
+
+            using (var scope = new MapContextScope())
+            {
+                scope.Context.Parameters["href"] = _href;
+                models = await Query((int)tenantId).ToListAsync();
+            }
+
+            return Ok(models);
         }
 
         [HttpGet("guid")]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<Computer>> GetAsync([FromRoute] string tenant, [FromRoute] Guid guid)
+        public async Task<ActionResult<Computer>> GetAsync(string tenant, Guid guid)
         {
             int? tenantId = await GetTenantIdAsync(tenant);
 
@@ -31,7 +57,13 @@ namespace Assets
                 return NotFound();
             }
             
-            Computer model = await Query((int)tenantId).SingleOrDefaultAsync(x => x.Guid == guid);
+            Computer model;
+
+            using (var scope = new MapContextScope())
+            {
+                scope.Context.Parameters["href"] = _href;
+                model = await Query((int)tenantId).SingleOrDefaultAsync(x => x.Guid == guid);
+            }
 
             if (model == null)
             {
@@ -41,18 +73,16 @@ namespace Assets
             return Ok(model);
         }
 
-        [HttpGet]
-        [Authorize(Policy = "Authenticated")]
-        public async Task<ActionResult<IList<Computer>>> GetAsync([FromRoute] string tenant)
+        [HttpPost]
+        public async Task<ActionResult<Computer>> PostAsync(string tenant, Computer model)
         {
-            int? tenantId = await GetTenantIdAsync(tenant);
+            throw new NotImplementedException();
+        }
 
-            if (tenantId == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(await Query((int)tenantId).ToListAsync());
+        [HttpPut("guid")]
+        public async Task<ActionResult<Computer>> PutAsync(string tenant, Guid guid, Computer model)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task<int?> GetTenantIdAsync(string tenant)
@@ -77,32 +107,8 @@ namespace Assets
                 from computer in _db.Computers
                 where computer.Asset.TenantId == tenantId
                     && computer.Asset.DeletedDate == null
-                let allocatedContact = computer.Asset.AllocatedContact
-                select new Computer
-                {
-                    Href = Url.Action("GetAsync", new { tenant = computer.Asset.Tenant.Area, guid = computer.Asset.Guid }),
-                    Guid = computer.Asset.Guid,
-                    Version = computer.Asset.Version,
-                    Description = computer.Asset.Description,
-                    SerialNumber = computer.Asset.SerialNumber,
-                    Make = computer.Asset.Make,
-                    Model = computer.Asset.Model,
-                    Tag = computer.Asset.Tag,
-                    Processor = computer.Processor,
-                    Memory = computer.Memory,
-                    AllocatedContact = allocatedContact != null
-                        ? new ContactRef
-                        {
-                            Href = allocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Person
-                                ? Url.Action("GetAsync", "People", new { tenant = allocatedContact.Tenant.Area, guid = allocatedContact.Guid })
-                                : (allocatedContact.ContactType.Id == (int)Entities.ContactTypeId.Organisation
-                                    ? Url.Action("GetAsync", "Organisations", new { tenant = allocatedContact.Tenant.Area, guid = allocatedContact.Guid })
-                                    : null),
-                            Name = allocatedContact.Name
-                        }
-                        : null
-                }
-            );
+                select computer
+            ).ProjectToType<Computer>(_adapterConfig);
         }
     }
 }

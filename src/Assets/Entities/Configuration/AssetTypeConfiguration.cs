@@ -23,9 +23,9 @@ namespace Assets.Entities.Configurations
             builder.HasData(
                 new[]
                 {
-                    new AssetType { Id = 1, Name = "Computer" },
-                    new AssetType { Id = 2, Name = "Monitor" },
-                    new AssetType { Id = 3, Name = "Phone" }
+                    new AssetType { Id = (int)AssetTypeId.Computer, Name = "Computer" },
+                    new AssetType { Id = (int)AssetTypeId.Monitor, Name = "Monitor" },
+                    new AssetType { Id = (int)AssetTypeId.Phone, Name = "Phone" }
                 });
         }
     }

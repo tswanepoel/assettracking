@@ -1,13 +1,17 @@
 using Assets.Entities;
+using Assets.Models.Mapping;
+using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -32,12 +36,6 @@ namespace Assets
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
 
-            services.AddAuthorization(options =>
-            {
-                AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.AddPolicy("Authenticated", policy);
-            });
-
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services.AddAuthentication(options =>
@@ -61,6 +59,14 @@ namespace Assets
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            var config = new TypeAdapterConfig();
+            config.Scan(typeof(TenantRegister).Assembly);
+
+            services.AddSingleton(config);
+
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<HrefHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,9 +104,7 @@ namespace Assets
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
