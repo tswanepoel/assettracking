@@ -15,5 +15,11 @@ namespace Assets.Models
         public string Processor { get; set; }
         public long? Memory { get; set; }
         public ContactRef AllocatedContact { get; set; }
+        public DateTimeOffset? AllocatedDate { get; set; }
+        public string AllocatedUser { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public string CreatedUser { get; set; }
+        public DateTimeOffset ModifiedDate { get; set; }
+        public string ModifiedUser { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Assets.Models;
 using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,13 @@ namespace Assets.Controllers
     public class TenantsController : ControllerBase
     {
         private readonly Entities.AssetsDbContext _db;
-        private readonly TypeAdapterConfig _adapterConfig;
+        private readonly IMapper _mapper;
         private readonly HrefHelper _href;
 
-        public TenantsController(Entities.AssetsDbContext db, TypeAdapterConfig adapterConfig, HrefHelper href)
+        public TenantsController(Entities.AssetsDbContext db, IMapper mapper, HrefHelper href)
         {
             _db = db;
-            _adapterConfig = adapterConfig;
+            _mapper = mapper;
             _href = href;
         }
 
@@ -32,7 +33,16 @@ namespace Assets.Controllers
             using (var scope = new MapContextScope())
             {
                 scope.Context.Parameters["href"] = _href;
-                models = await Query().ToListAsync();
+
+                IQueryable<Tenant> query =
+                (
+                    from tenant in _db.Tenants
+                    where tenant.DeletedDate == null
+                        && tenant.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
+                    select tenant
+                ).ProjectToType<Tenant>(_mapper.Config);
+
+                models = await query.ToListAsync();
             }
 
             return Ok(models);
@@ -47,7 +57,16 @@ namespace Assets.Controllers
             using (var scope = new MapContextScope())
             {
                 scope.Context.Parameters["href"] = _href;
-                model = await Query().SingleOrDefaultAsync(x => x.Area == area);
+
+                IQueryable<Tenant> query =
+                (
+                    from tenant in _db.Tenants
+                    where tenant.DeletedDate == null
+                        && tenant.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
+                    select tenant
+                ).ProjectToType<Tenant>(_mapper.Config);
+
+                model = await query.SingleOrDefaultAsync(x => x.Area == area);
             }
 
             if (model == null)
@@ -56,17 +75,6 @@ namespace Assets.Controllers
             }
 
             return Ok(model);
-        }
-
-        private IQueryable<Tenant> Query()
-        {
-            return
-            (
-                from tenant in _db.Tenants
-                where tenant.DeletedDate == null
-                    && tenant.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
-                select tenant
-            ).ProjectToType<Tenant>(_adapterConfig);
         }
     }
 }

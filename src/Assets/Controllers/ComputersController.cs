@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Assets.Models;
 using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,13 +18,13 @@ namespace Assets
     public class ComputersController : ControllerBase
     {
         private readonly Entities.AssetsDbContext _db;
-        private readonly TypeAdapterConfig _adapterConfig;
+        private readonly IMapper _mapper;
         private readonly HrefHelper _href;
 
-        public ComputersController(Entities.AssetsDbContext db, TypeAdapterConfig adapterConfig, HrefHelper href)
+        public ComputersController(Entities.AssetsDbContext db, IMapper mapper, HrefHelper href)
         {
             _db = db;
-            _adapterConfig = adapterConfig;
+            _mapper = mapper;
             _href = href;
         }
 
@@ -41,7 +43,16 @@ namespace Assets
             using (var scope = new MapContextScope())
             {
                 scope.Context.Parameters["href"] = _href;
-                models = await Query((int)tenantId).ToListAsync();
+
+                IQueryable<Computer> query =
+                (
+                    from computer in _db.Computers
+                    where computer.Asset.TenantId == tenantId
+                        && computer.Asset.DeletedDate == null
+                    select computer
+                ).ProjectToType<Computer>(_mapper.Config);
+
+                models = await query.ToListAsync();
             }
 
             return Ok(models);
@@ -62,7 +73,16 @@ namespace Assets
             using (var scope = new MapContextScope())
             {
                 scope.Context.Parameters["href"] = _href;
-                model = await Query((int)tenantId).SingleOrDefaultAsync(x => x.Guid == guid);
+
+                IQueryable<Computer> query =
+                (
+                    from computer in _db.Computers
+                    where computer.Asset.TenantId == tenantId
+                        && computer.Asset.DeletedDate == null
+                    select computer
+                ).ProjectToType<Computer>(_mapper.Config);
+
+                model = await query.SingleOrDefaultAsync(x => x.Guid == guid);
             }
 
             if (model == null)
@@ -76,39 +96,91 @@ namespace Assets
         [HttpPost]
         public async Task<ActionResult<Computer>> PostAsync(string tenant, Computer model)
         {
-            throw new NotImplementedException();
+            int? tenantId = await GetTenantIdAsync(tenant);
+
+            if (tenantId == null)
+            {
+                return NotFound();
+            }
+
+            var entity = new Entities.Computer 
+            {
+                Asset = new Entities.Asset
+                {
+                    TenantId = tenantId.Value,
+                    AssetTypeId = (int)Entities.AssetTypeId.Computer
+                }
+            };
+
+            _mapper.Map(model, entity);
+
+            if (entity.Asset.Guid == default)
+            {
+                entity.Asset.Guid = Guid.NewGuid();
+            }
+
+            entity.Asset.ModifiedDate =
+                entity.Asset.CreatedDate = DateTimeOffset.Now;
+
+            entity.Asset.ModifiedUser = 
+                entity.Asset.CreatedUser = User.Identity.Name;
+
+            _db.Computers.Add(entity);
+            await _db.SaveChangesAsync();
+
+            using (var scope = new MapContextScope())
+            {
+                scope.Context.Parameters["href"] = _href;
+
+                IQueryable<Computer> query =
+                (
+                    from computer in _db.Computers
+                    where computer.Asset.TenantId == tenantId
+                        && computer.Asset.DeletedDate == null
+                    select computer
+                ).ProjectToType<Computer>(_mapper.Config);
+
+                model = await query.SingleOrDefaultAsync(x => x.Guid == entity.Asset.Guid);
+            }
+
+            return Created(model.Href, model);
         }
 
         [HttpPut("guid")]
         public async Task<ActionResult<Computer>> PutAsync(string tenant, Guid guid, Computer model)
         {
+            int? tenantId = await GetTenantIdAsync(tenant);
+
+            if (tenantId == null)
+            {
+                return NotFound();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public async Task<ActionResult<Computer>> PatchAsync(string tenant, Guid guid, JsonPatchDocument<Computer> patch)
+        {
+            int? tenantId = await GetTenantIdAsync(tenant);
+
+            if (tenantId == null)
+            {
+                return NotFound();
+            }
+            
             throw new NotImplementedException();
         }
 
         private async Task<int?> GetTenantIdAsync(string tenant)
         {
-            return
-            (
-                await
-                (
-                    from t in _db.Tenants
-                    where t.DeletedDate == null
-                        && t.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
-                        && t.Area == tenant
-                    select new { t.Id }
-                ).SingleOrDefaultAsync()
-            )?.Id;
-        }
+            var query =
+                from t in _db.Tenants
+                where t.DeletedDate == null
+                    && t.UserRoles.Any(x => x.User.UserName == User.Identity.Name)
+                    && t.Area == tenant
+                select new { t.Id };
 
-        private IQueryable<Computer> Query(int tenantId)
-        {
-            return
-            (
-                from computer in _db.Computers
-                where computer.Asset.TenantId == tenantId
-                    && computer.Asset.DeletedDate == null
-                select computer
-            ).ProjectToType<Computer>(_adapterConfig);
+            return (await query.SingleOrDefaultAsync())?.Id;
         }
     }
 }

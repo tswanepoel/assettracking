@@ -1,8 +1,10 @@
 using Assets.Entities;
 using Assets.Models.Mapping;
+using Assets.Models.Validation;
+using FluentValidation.AspNetCore;
 using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -32,9 +34,10 @@ namespace Assets
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AssetsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AssetsDb")));
-
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddControllersWithViews();
+            
+            services.AddControllersWithViews()
+                .AddFluentValidation(c => c.RegisterValidatorsFromAssembly(typeof(ComputerValidator).Assembly));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -49,21 +52,16 @@ namespace Assets
                 options.Audience = "https://assettracking.azurewebsites.net/api";
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppPulse API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppPulse API", Version = "v1" }));
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(c => c.RootPath = "ClientApp/dist");
+            
+            var mapperConfig = new TypeAdapterConfig();
+            mapperConfig.Scan(typeof(TenantRegister).Assembly);
 
-            var config = new TypeAdapterConfig();
-            config.Scan(typeof(TenantRegister).Assembly);
-
-            services.AddSingleton(config);
+            var mapper = new Mapper(mapperConfig);
+            services.AddSingleton<IMapper>(mapper);
 
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<HrefHelper>();
@@ -92,20 +90,12 @@ namespace Assets
             }
 
             app.UseSwagger();
-
-            app.UseReDoc(c =>
-			{
-				c.SpecUrl("../swagger/v1/swagger.json");
-			});
+            app.UseReDoc(c => c.SpecUrl("../swagger/v1/swagger.json"));
             
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(c => c.MapControllers());
 
             app.UseSpa(spa =>
             {
