@@ -33,7 +33,8 @@ namespace Assets
 
         [HttpGet]
         public async Task<ActionResult<IList<Computer>>> SearchAsync(string tenant, ODataQueryOptions<Computer> options)
-        {
+        { 
+            options.Validate(new ODataValidationSettings());
             int? tenantId = await GetTenantIdAsync(tenant);
 
             if (tenantId == null)
@@ -55,15 +56,17 @@ namespace Assets
                     select computer
                 ).ProjectToType<Computer>(_mapper.Config);
 
-                models = await options.ApplyTo(query).ToListAsync();
+                models = await options.ApplyTo(query, new ODataQuerySettings { EnsureStableOrdering = false }).ToListAsync();
             }
 
             return Ok(models);
         }
 
-        [HttpGet("guid")]
-        public async Task<ActionResult<Computer>> GetAsync(string tenant, Guid guid)
+        [HttpGet("{guid}")]
+        [ProducesResponseType(typeof(Computer), 200)]
+        public async Task<ActionResult<Computer>> GetAsync(string tenant, Guid guid, ODataQueryOptions<Computer> options)
         {
+            options.Validate(new ODataValidationSettings { AllowedQueryOptions = AllowedQueryOptions.Select | AllowedQueryOptions.Expand });
             int? tenantId = await GetTenantIdAsync(tenant);
 
             if (tenantId == null)
@@ -71,7 +74,7 @@ namespace Assets
                 return NotFound();
             }
             
-            Computer model;
+            object model;
 
             using (var scope = new MapContextScope())
             {
@@ -85,7 +88,7 @@ namespace Assets
                     select computer
                 ).ProjectToType<Computer>(_mapper.Config);
 
-                model = await query.SingleOrDefaultAsync(x => x.Guid == guid);
+                model = await options.ApplyTo(query.Where(x => x.Guid == guid)).SingleOrDefaultAsync();
             }
 
             if (model == null)

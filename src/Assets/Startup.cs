@@ -125,7 +125,7 @@ namespace Assets
             app.UseEndpoints(c =>
             {
                 c.EnableDependencyInjection();
-                c.Select().OrderBy().Filter();
+                c.Select().Expand().Filter().OrderBy().MaxTop(null);
 
                 c.MapControllers();
             });

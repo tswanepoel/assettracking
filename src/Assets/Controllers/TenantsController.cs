@@ -2,6 +2,7 @@
 using Assets.Models;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,13 +34,14 @@ namespace Assets.Controllers
         [ProducesResponseType(typeof(IList<Tenant>), 200)]
         public async Task<ActionResult> SearchAsync(ODataQueryOptions<Tenant> options)
         {
+            options.Validate(new ODataValidationSettings());
             IList models;
 
             using (var scope = new MapContextScope())
             {
                 scope.Context.Parameters["href"] = _href;
 
-                IQueryable<Tenant> query =
+                IQueryable query =
                 (
                     from tenant in _db.Tenants
                     where tenant.DeletedDate == null
@@ -47,16 +49,18 @@ namespace Assets.Controllers
                     select tenant
                 ).ProjectToType<Tenant>(_mapper.Config);
 
-                models = await options.ApplyTo(query).ToListAsync();
+                models = await options.ApplyTo(query,new ODataQuerySettings { EnsureStableOrdering = false }).ToListAsync();
             }
 
             return Ok(models);
         }
 
         [HttpGet("{area}")]
-        public async Task<ActionResult<Tenant>> GetAsync(string area)
+        [ProducesResponseType(typeof(Tenant), 200)]
+        public async Task<ActionResult<Tenant>> GetAsync(string area, ODataQueryOptions<Tenant> options)
         {
-            Tenant model;
+            options.Validate(new ODataValidationSettings { AllowedQueryOptions = AllowedQueryOptions.Select | AllowedQueryOptions.Expand });
+            object model;
 
             using (var scope = new MapContextScope())
             {
@@ -70,7 +74,7 @@ namespace Assets.Controllers
                     select tenant
                 ).ProjectToType<Tenant>(_mapper.Config);
 
-                model = await query.SingleOrDefaultAsync(x => x.Area == area);
+                model = await options.ApplyTo(query.Where(x => x.Area == area)).SingleOrDefaultAsync();
             }
 
             if (model == null)

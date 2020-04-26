@@ -33,7 +33,8 @@ namespace Assets.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IList<Person>), 200)]
         public async Task<ActionResult> SearchAsync(string tenant, ODataQueryOptions<Person> options)
-        {
+        { 
+            options.Validate(new ODataValidationSettings());
             int? tenantId = await GetTenantIdAsync(tenant);
 
             if (tenantId == null)
@@ -56,15 +57,17 @@ namespace Assets.Controllers
                     select contact
                 ).ProjectToType<Person>(_mapper.Config);
 
-                models = await options.ApplyTo(query).ToListAsync();
+                models = await options.ApplyTo(query, new ODataQuerySettings { EnsureStableOrdering = false }).ToListAsync();
             }
 
             return Ok(models);
         }
 
-        [HttpGet("guid")]
-        public async Task<ActionResult<Person>> GetAsync(string tenant, Guid guid)
+        [HttpGet("{guid}")]
+        [ProducesResponseType(typeof(Person), 200)]
+        public async Task<ActionResult> GetAsync(string tenant, Guid guid, ODataQueryOptions<Person> options)
         {
+            options.Validate(new ODataValidationSettings { AllowedQueryOptions = AllowedQueryOptions.Select | AllowedQueryOptions.Expand });
             int? tenantId = await GetTenantIdAsync(tenant);
 
             if (tenantId == null)
@@ -72,7 +75,7 @@ namespace Assets.Controllers
                 return NotFound();
             }
             
-            Person model;
+            object model;
 
             using (var scope = new MapContextScope())
             {
@@ -86,8 +89,8 @@ namespace Assets.Controllers
                         && contact.DeletedDate == null
                     select contact
                 ).ProjectToType<Person>(_mapper.Config);
-
-                model = await query.SingleOrDefaultAsync(x => x.Guid == guid);
+                
+                model = await options.ApplyTo(query.Where(x => x.Guid == guid)).SingleOrDefaultAsync();
             }
 
             if (model == null)
