@@ -6,8 +6,8 @@ namespace Assets.Entities
     public class Contact
     {
         public int Id { get; set; }
-        public int TenantId { get; set; }
         public int ContactTypeId { get; set; }
+        public int TenantId { get; set; }
         public Guid Guid { get; set; }
         public byte[] Version { get; set; }
         public string Name { get; set; }

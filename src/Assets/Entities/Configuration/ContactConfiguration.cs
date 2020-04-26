@@ -34,15 +34,15 @@ namespace Assets.Entities.Configurations
             builder.Property(x => x.DeletedUser)
                 .HasMaxLength(128);
 
-            builder.HasOne(x => x.Tenant)
-                .WithMany(x => x.Contacts)
-                .HasForeignKey(x => x.TenantId)
-                .HasConstraintName("FK_Contact_Tenant");
-
             builder.HasOne(x => x.ContactType)
                 .WithMany(x => x.Contacts)
                 .HasForeignKey(x => x.ContactTypeId)
                 .HasConstraintName("FK_Contact_ContactType");
+
+            builder.HasOne(x => x.Tenant)
+                .WithMany(x => x.Contacts)
+                .HasForeignKey(x => x.TenantId)
+                .HasConstraintName("FK_Contact_Tenant");
 
             builder.HasIndex(x => new { x.TenantId, x.Guid })
                 .IsUnique()

@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Assets.Extensions;
 using Assets.Models;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +22,9 @@ namespace Assets
     {
         private readonly Entities.AssetsDbContext _db;
         private readonly IMapper _mapper;
-        private readonly HrefHelper _href;
+        private readonly HrefBuilder _href;
 
-        public ComputersController(Entities.AssetsDbContext db, IMapper mapper, HrefHelper href)
+        public ComputersController(Entities.AssetsDbContext db, IMapper mapper, HrefBuilder href)
         {
             _db = db;
             _mapper = mapper;
@@ -29,7 +32,7 @@ namespace Assets
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<Computer>>> SearchAsync(string tenant)
+        public async Task<ActionResult<IList<Computer>>> SearchAsync(string tenant, ODataQueryOptions<Computer> options)
         {
             int? tenantId = await GetTenantIdAsync(tenant);
 
@@ -38,7 +41,7 @@ namespace Assets
                 return NotFound();
             }
 
-            List<Computer> models;
+            IList models;
 
             using (var scope = new MapContextScope())
             {
@@ -52,7 +55,7 @@ namespace Assets
                     select computer
                 ).ProjectToType<Computer>(_mapper.Config);
 
-                models = await query.ToListAsync();
+                models = await options.ApplyTo(query).ToListAsync();
             }
 
             return Ok(models);
@@ -159,6 +162,7 @@ namespace Assets
             throw new NotImplementedException();
         }
 
+        [HttpPatch("guid")]
         public async Task<ActionResult<Computer>> PatchAsync(string tenant, Guid guid, JsonPatchDocument<Computer> patch)
         {
             int? tenantId = await GetTenantIdAsync(tenant);
@@ -167,7 +171,7 @@ namespace Assets
             {
                 return NotFound();
             }
-            
+
             throw new NotImplementedException();
         }
 

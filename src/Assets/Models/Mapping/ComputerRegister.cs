@@ -7,7 +7,7 @@ namespace Assets.Models.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.ForType<Entities.Computer, Computer>()
-                .Map(x => x.Href, x => ((HrefHelper)MapContext.Current.Parameters["href"]).Computers(x.Asset.Tenant.Area, x.Asset.Guid))
+                .Map(x => x.Href, x => ((HrefBuilder)MapContext.Current.Parameters["href"]).Computers(x.Asset.Tenant.Area, x.Asset.Guid))
                 .Map(x => x.AllocatedDate, x => x.Asset.AllocatedDate)
                 .Map(x => x.AllocatedUser, x => x.Asset.AllocatedUser)
                 .Map(x => x.CreatedDate, x => x.Asset.CreatedDate)
