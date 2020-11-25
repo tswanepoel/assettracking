@@ -69,10 +69,10 @@ namespace Assets.Entities.Configuration
                 
             builder.HasIndex(x => new { x.TenantId, x.Guid })
                 .IsUnique()
-                .HasName("IX_Asset_Tenant_Guid");
+                .HasDatabaseName("IX_Asset_Tenant_Guid");
 
             builder.HasIndex(x => new { x.TenantId, x.Tag })
-                .HasName("IX_Asset_Tenant_Tag");
+                .HasDatabaseName("IX_Asset_Tenant_Tag");
         }
     }
 }

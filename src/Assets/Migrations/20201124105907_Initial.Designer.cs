@@ -10,25 +10,23 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assets.Migrations
 {
     [DbContext(typeof(AssetsDbContext))]
-    [Migration("20200420091818_Initial")]
+    [Migration("20201124105907_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("Assets.Entities.Asset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("AllocatedContactId")
                         .HasColumnType("int");
@@ -47,46 +45,46 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Make")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Model")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("SerialNumber")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Tag")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -99,7 +97,7 @@ namespace Assets.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Asset")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Guid")
                         .HasName("AK_Asset_Guid");
@@ -110,10 +108,10 @@ namespace Assets.Migrations
 
                     b.HasIndex("TenantId", "Guid")
                         .IsUnique()
-                        .HasName("IX_Asset_Tenant_Guid");
+                        .HasDatabaseName("IX_Asset_Tenant_Guid");
 
                     b.HasIndex("TenantId", "Tag")
-                        .HasName("IX_Asset_Tenant_Tag");
+                        .HasDatabaseName("IX_Asset_Tenant_Tag");
 
                     b.ToTable("Asset");
                 });
@@ -131,27 +129,27 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("AssetId", "ContactId")
                         .HasName("PK_AssetAllocationChange")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasIndex("ContactId");
 
@@ -163,7 +161,7 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AssetId")
                         .HasColumnType("int");
@@ -173,15 +171,15 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
@@ -191,17 +189,17 @@ namespace Assets.Migrations
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id")
                         .HasName("PK_AssetComment")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Guid")
                         .HasName("AK_AssetComment_Guid");
@@ -224,27 +222,27 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("AssetId", "PictureId")
                         .HasName("PK_AssetPicture")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("AssetPicture");
                 });
@@ -254,16 +252,16 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id")
                         .HasName("PK_AssetType")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Name")
                         .HasName("AK_AssetType_Name");
@@ -293,9 +291,7 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<byte[]>("Content")
                         .IsRequired()
@@ -303,15 +299,15 @@ namespace Assets.Migrations
 
                     b.Property<string>("ContentType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_Blob")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Guid")
                         .HasName("AK_Blob_Guid");
@@ -328,12 +324,12 @@ namespace Assets.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Processor")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("ComputerId")
                         .HasName("PK_Computer")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("Computer");
                 });
@@ -343,9 +339,7 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("ContactTypeId")
                         .HasColumnType("int");
@@ -355,15 +349,15 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
@@ -373,8 +367,8 @@ namespace Assets.Migrations
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -390,7 +384,7 @@ namespace Assets.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Contact")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Guid")
                         .HasName("AK_Contact_Guid");
@@ -399,7 +393,7 @@ namespace Assets.Migrations
 
                     b.HasIndex("TenantId", "Guid")
                         .IsUnique()
-                        .HasName("IX_Contact_Tenant_Guid");
+                        .HasDatabaseName("IX_Contact_Tenant_Guid");
 
                     b.ToTable("Contact");
                 });
@@ -409,7 +403,7 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("ContactId")
                         .HasColumnType("int");
@@ -419,15 +413,15 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
@@ -437,17 +431,17 @@ namespace Assets.Migrations
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id")
                         .HasName("PK_ContactComment")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Guid")
                         .HasName("AK_ContactComment_Guid");
@@ -470,27 +464,27 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("ContactId", "PictureId")
                         .HasName("PK_ContactPicture")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("ContactPicture");
                 });
@@ -500,16 +494,16 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id")
                         .HasName("PK_ContactType")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Name")
                         .HasName("AK_ContactType_Name");
@@ -535,11 +529,11 @@ namespace Assets.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("SizeInches")
-                        .HasColumnType("DECIMAL(8, 1)");
+                        .HasColumnType("DECIMAL(8,1)");
 
                     b.HasKey("MonitorId")
                         .HasName("PK_Monitor")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("Monitor");
                 });
@@ -550,19 +544,19 @@ namespace Assets.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Imei")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<long?>("Memory")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Processor")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("PhoneId")
                         .HasName("PK_Phone")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("Phone");
                 });
@@ -572,16 +566,16 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id")
                         .HasName("PK_Role")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Name")
                         .HasName("AK_Role_Name");
@@ -606,9 +600,7 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Area")
                         .IsRequired()
@@ -619,23 +611,23 @@ namespace Assets.Migrations
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -649,7 +641,7 @@ namespace Assets.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Tenant")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("Area")
                         .HasName("AK_Tenant_Area");
@@ -673,7 +665,7 @@ namespace Assets.Migrations
 
                     b.HasKey("TenantId", "UserId", "RoleId")
                         .HasName("PK_TenantUserRole")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasIndex("RoleId");
 
@@ -687,36 +679,34 @@ namespace Assets.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedUser")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTimeOffset?>("LastAccessedDate")
                         .HasColumnType("datetimeoffset");
@@ -726,21 +716,21 @@ namespace Assets.Migrations
 
                     b.Property<string>("ModifiedUser")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
@@ -750,7 +740,7 @@ namespace Assets.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_User")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.HasAlternateKey("UserName")
                         .HasName("AK_User_UserName");
@@ -779,6 +769,12 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_Asset_Tenant")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AllocatedContact");
+
+                    b.Navigation("AssetType");
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetAllocationChange", b =>
@@ -796,6 +792,10 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_AssetAllocationChange_Contact")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetComment", b =>
@@ -806,6 +806,8 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_AssetComment_Asset")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("Assets.Entities.AssetPicture", b =>
@@ -823,6 +825,10 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_AssetPicture_Blob")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("Assets.Entities.Computer", b =>
@@ -833,6 +839,8 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_Computer_Asset")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("Assets.Entities.Contact", b =>
@@ -850,6 +858,10 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_Contact_Tenant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ContactType");
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Assets.Entities.ContactComment", b =>
@@ -860,6 +872,8 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_ContactComment_Contact")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Assets.Entities.ContactPicture", b =>
@@ -877,6 +891,10 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_ContactPicture_Contact")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("Assets.Entities.Monitor", b =>
@@ -887,6 +905,8 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_Monitor_Asset")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("Assets.Entities.Phone", b =>
@@ -897,6 +917,8 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_Phone_Asset")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("Assets.Entities.TenantUserRole", b =>
@@ -921,6 +943,55 @@ namespace Assets.Migrations
                         .HasConstraintName("FK_TenantUserRole_User")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assets.Entities.Asset", b =>
+                {
+                    b.Navigation("AllocationChanges");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Computer");
+
+                    b.Navigation("Monitor");
+
+                    b.Navigation("Phone");
+
+                    b.Navigation("Pictures");
+                });
+
+            modelBuilder.Entity("Assets.Entities.AssetType", b =>
+                {
+                    b.Navigation("Assets");
+                });
+
+            modelBuilder.Entity("Assets.Entities.Contact", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Pictures");
+                });
+
+            modelBuilder.Entity("Assets.Entities.ContactType", b =>
+                {
+                    b.Navigation("Contacts");
+                });
+
+            modelBuilder.Entity("Assets.Entities.Tenant", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Contacts");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
