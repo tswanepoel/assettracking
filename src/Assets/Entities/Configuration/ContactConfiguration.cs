@@ -46,7 +46,7 @@ namespace Assets.Entities.Configurations
 
             builder.HasIndex(x => new { x.TenantId, x.Guid })
                 .IsUnique()
-                .HasName("IX_Contact_Tenant_Guid");
+                .HasDatabaseName("IX_Contact_Tenant_Guid");
         }
     }
 }
